@@ -12,6 +12,7 @@ export const PATH_FILM = {
     root: ROOTS_FILM,
     genres: path(ROOTS_FILM, "/genres"),
     favorite: path(ROOTS_FILM, "/favorite"),
+    createFavorite:path(ROOTS_FILM, "/create-favorite"),
     search: path(ROOTS_FILM, "/search"),
 };
 

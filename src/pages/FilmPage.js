@@ -88,7 +88,7 @@ function FilmPage() {
                                 <Grid item xs={12}>
                                     <Button
                                         onClick={() => {
-                                            navigate(path(PATH_FILM.favorite, `/${id}`));
+                                            navigate(path(PATH_FILM.createFavorite, `/${id}`));
                                         }}
                                         startIcon={<FavoriteIcon />}
                                     >

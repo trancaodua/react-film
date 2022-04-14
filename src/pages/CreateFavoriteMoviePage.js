@@ -60,7 +60,7 @@ function CreateFavoritaMoviePage() {
                 >
                     HOME
                 </Link>
-                <Typography color="text.primary">FAVORITE</Typography>
+                <Typography color="text.primary">CREATE FAVORITE</Typography>
             </Breadcrumbs>
             {loading && <LoadingScreens />}
             {error && <Alert severity="error">{error}</Alert>}

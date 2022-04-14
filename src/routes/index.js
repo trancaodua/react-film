@@ -17,7 +17,7 @@ function index() {
                 <Route path="auth/login" element={<SignInOutPage />} />
                 <Route path="film/:id" element={<FilmPage />} />
                 <Route path="film/favorite" element={<FavoriteMoviesPage />} />
-                <Route path="film/favorite/:id" element={<CreateFavoriteMoviePage />} />
+                <Route path="film/create-favorite/:id" element={<CreateFavoriteMoviePage />} />
                 <Route path="film/genres/:id" element={<GenresFilmPage />} />
                 <Route path="film/search/:q" element={<FilmSearchPage />} />
                 <Route path="*" element={<HomePage />}></Route>
