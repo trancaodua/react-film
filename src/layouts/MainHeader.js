@@ -3,18 +3,24 @@ import useOffSetTop from "../hooks/useOffSetTop";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import apiService from "../app/apiService";
+import IconButton from "@mui/material/IconButton";
 
 import { HEADER } from "../app/config";
 import { Toolbar, AppBar, Container, Box, Button } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import LoginIcon from "@mui/icons-material/Login";
+import LoginOutlined from "@mui/icons-material/LoginOutlined";
+import Avatar from "@mui/material/Avatar";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled, useTheme, alpha } from "@mui/material/styles";
 import MenuDesktop from "./MenuDesktop";
 import MenuMobile from "./MenuMobile";
 import { API_KEY } from "../app/config";
 import { PATH_AUTH, path, PATH_FILM } from "../routes/paths";
-import { ConstructionOutlined } from "@mui/icons-material";
+import useAuth from "../hooks/useAuth";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
 
 const BoxStyle = styled(Box)(({ theme }) => ({
     height: HEADER.MOBILE_HEIGHT,
@@ -81,12 +87,22 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const MainHeader = () => {
     const isDesktop = useResponsive("up", "md");
+    const auth = useAuth();
     const isOffset = useOffSetTop(HEADER.MAIN_DESKTOP_HEIGHT);
     const { pathname } = useLocation();
     const [genres, setGenres] = useState([]);
     let navigate = useNavigate();
     const isHome = pathname === "/";
     const { q } = useParams();
+    const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+    const handleOpenUserMenu = (event) => {
+        setAnchorElUser(event.currentTarget);
+    };
+
+    const handleCloseUserMenu = () => {
+        setAnchorElUser(null);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -149,16 +165,48 @@ const MainHeader = () => {
                                 />
                             </Search>
                         </Box>
-
-                        <Button
-                            onClick={() => {
-                                navigate(PATH_AUTH.login, { replace: true });
-                            }}
-                            variant="contained"
-                            startIcon={<LoginIcon />}
-                        >
-                            Login
-                        </Button>
+                        {auth.isAuthenticated ? (
+                            <>
+                                <IconButton onClick={handleOpenUserMenu}>
+                                    <Avatar alt="Remy Sharp" src="/images/avatar/1.jpg" />
+                                </IconButton>
+                                <Menu
+                                    sx={{ mt: "45px" }}
+                                    id="menu-appbar"
+                                    anchorEl={anchorElUser}
+                                    anchorOrigin={{
+                                        vertical: "top",
+                                        horizontal: "right",
+                                    }}
+                                    keepMounted
+                                    transformOrigin={{
+                                        vertical: "top",
+                                        horizontal: "right",
+                                    }}
+                                    open={Boolean(anchorElUser)}
+                                    onClose={handleCloseUserMenu}
+                                >
+                                    <MenuItem
+                                        onClick={() => {
+                                            handleCloseUserMenu();
+                                            auth.logout(() => navigate(pathname, { replace: true }));
+                                        }}
+                                    >
+                                        <Typography textAlign="center">Logout</Typography>
+                                    </MenuItem>
+                                </Menu>
+                            </>
+                        ) : (
+                            <Button
+                                onClick={() => {
+                                    navigate(PATH_AUTH.login, { replace: true });
+                                }}
+                                variant="contained"
+                                startIcon={<LoginIcon />}
+                            >
+                                Login
+                            </Button>
+                        )}
                     </Container>
                 </ToolbarStyle>
             </AppBar>
