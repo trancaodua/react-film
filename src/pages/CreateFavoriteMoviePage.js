@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams, useParams } from "react-router-dom";
+import { useSearchParams, useParams, useNavigate } from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import { createToken, makeFavoriteMovie } from "../app/themoviedbApi";
 import LoadingScreens from "../components/LoadingScreens";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
+import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { PATH_FILM, path } from "../routes/paths";
 
 function CreateFavoritaMoviePage() {
     let [searchParams, setSearchParams] = useSearchParams();
@@ -14,6 +16,8 @@ function CreateFavoritaMoviePage() {
     let [sucess, setSucess] = useState("");
     let [loading, setLoading] = useState(false);
     let { id } = useParams();
+    const navigate = useNavigate();
+
     useEffect(() => {
         const loading = async () => {
             let requestToken = searchParams.get("request_token");
@@ -40,6 +44,7 @@ function CreateFavoritaMoviePage() {
                     setLoading(false);
                 }
             } else {
+                setLoading(true);
                 createToken();
             }
         };
@@ -64,7 +69,20 @@ function CreateFavoritaMoviePage() {
             </Breadcrumbs>
             {loading && <LoadingScreens />}
             {error && <Alert severity="error">{error}</Alert>}
-            {sucess && <Alert>{sucess}</Alert>}
+            {sucess && (
+                <Stack gap={1}>
+                    <Alert>{sucess}</Alert>
+                    <Button
+                        variant="contained"
+                        sx={{ alignSelf: "center" }}
+                        onClick={() => {
+                            navigate(PATH_FILM.favorite, { replace: true });
+                        }}
+                    >
+                        Go to Favorite Films
+                    </Button>
+                </Stack>
+            )}
         </Stack>
     );
 }

@@ -13,6 +13,7 @@ import { createToken, getAcount } from "../app/themoviedbApi";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 const StyledPagination = styled(Pagination)(({ theme }) => ({
     marginTop: theme.spacing(2),
@@ -23,7 +24,7 @@ const StyledPagination = styled(Pagination)(({ theme }) => ({
 
 function FavoriteMoviesPage() {
     const [loading, setLoading] = useState(false);
-    const [account, setAccount] = useState();
+    const [account, setAccount] = useLocalStorage("account", null);
     let [sucess, setSucess] = useState("");
     const [error, setError] = useState("");
     const [totalPages, setTotalPages] = useState(0);
@@ -31,12 +32,6 @@ function FavoriteMoviesPage() {
     const [page, setPage] = useState(1);
     let [searchParams, setSearchParams] = useSearchParams({ page: 1 });
     const currentPage = parseInt(searchParams.get("page"));
-
-    useEffect(() => {
-        if (localStorage.getItem("acount")) {
-            setAccount(JSON.parse(localStorage.getItem("acount")));
-        }
-    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -98,7 +93,7 @@ function FavoriteMoviesPage() {
                 createToken();
             }
         };
-        if (!localStorage.getItem("acount")) {
+        if (!account) {
             loadingAcount();
         }
     }, [searchParams]);

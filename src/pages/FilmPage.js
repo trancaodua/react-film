@@ -87,12 +87,13 @@ function FilmPage() {
                             <Grid item container xs={12} md={6} rowSpacing={0}>
                                 <Grid item xs={12}>
                                     <Button
+                                        variant="contained"
                                         onClick={() => {
                                             navigate(path(PATH_FILM.createFavorite, `/${id}`));
                                         }}
                                         startIcon={<FavoriteIcon />}
                                     >
-                                        Mak Favorite
+                                        Make Favorite
                                     </Button>
                                 </Grid>
                                 <Grid item xs={12}>
